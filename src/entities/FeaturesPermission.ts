@@ -8,7 +8,6 @@ export class FeaturesPermission {
   isAllowed: boolean
 
   constructor(
-    featureId: string,
     featureName: string,
     isAllowed: boolean,
   ) {

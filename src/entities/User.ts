@@ -1,10 +1,8 @@
 import {
   Entity,
   Column,
-  JoinTable,
   ObjectIdColumn,
   ObjectID,
-  OneToMany,
 } from 'typeorm';
 import { FeaturesPermission } from './FeaturesPermission';
 
@@ -16,7 +14,7 @@ export class User {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column({ nullable: true })
@@ -25,7 +23,6 @@ export class User {
   @Column({ nullable: true })
   roleId: number;
 
-  @OneToMany(() => FeaturesPermission, (featuresPermission) => featuresPermission.user)
-  @JoinTable()
-  permissions: FeaturesPermission[];
+  @Column(type => FeaturesPermission)
+  featuresPermission: FeaturesPermission[];
 };

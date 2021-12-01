@@ -1,29 +1,18 @@
-import {
-  Entity,
-  Column,
-  ManyToOne,
-  ObjectIdColumn,
-  ObjectID,
-} from 'typeorm';
-import { User } from './User'
+import { Column } from 'typeorm';
 
-@Entity()
 export class FeaturesPermission {
-  @ObjectIdColumn()
-  id: ObjectID;
-
-  @ManyToOne(() => User, (user) => user.permissions)
-  user: User;
-
-  @Column()
-  featureId: string;
-
   @Column()
   featureName: string;
 
-  @Column('boolean', { default: false })
-  readAccess: boolean;
+  @Column()
+  isAllowed: boolean
 
-  @Column('boolean', { default: false })
-  writeAccess: boolean;
+  constructor(
+    featureId: string,
+    featureName: string,
+    isAllowed: boolean,
+  ) {
+    this.featureName = featureName;
+    this.isAllowed = isAllowed;
+  }
 };

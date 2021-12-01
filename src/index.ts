@@ -1,14 +1,15 @@
-import { createConnection, getMongoManager } from 'typeorm';
+require('dotenv').config();
+import { createConnection } from 'typeorm';
 import { PORT } from './config';
 import buildApp from './app';
 import getIpAddress from './utils/getIpAddress';
 
  createConnection()
-  .then(async () => {
-    const manager = getMongoManager();
+  .then(async (connection) => {
+    const manager = connection.mongoManager;
     const app = await buildApp(manager);
 
-    app.listen(PORT ?? 3000, getIpAddress(), (err, address) => {
+    app.listen(PORT, getIpAddress(), (err, address) => {
       if (err) {
         console.error('Error during starting server: ', err);
         process.exit(1);

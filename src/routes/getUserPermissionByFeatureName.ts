@@ -10,24 +10,40 @@ interface Query {
   featureName: string;
 };
 
-export function checkUserPermissionByFeatureName(
+export function getUserPermissionByFeatureName(
   manager: MongoEntityManager
 ): Route<{ Querystring: Query }> {
   return ({
     method: 'GET',
     url: '/feature',
     schema: {
-      params: {
+      querystring: {
         type: 'object',
         properties: {
-          email: 'string',
-          featureName: 'string'
+          email: { type: 'string' },
+          featureName: { type: 'string' }
         }
       }
     },
     preHandler: authorizeProductManager(JWT_SECRET),
     handler: async (request, reply) => {
       const { email, featureName } = request.query;
+      let error;
+
+      if (!email) {
+        error = 'Missing user email.'
+      }
+
+      if (!featureName) {
+        error = 'Missing feature name.'
+      }
+
+      if (error) {
+        return reply.status(500).send({
+          error: `Error! Invalid request. ${error}`
+        })
+      }
+
       let user: User;
 
       try {
@@ -57,14 +73,14 @@ export function checkUserPermissionByFeatureName(
       );
       const checkPermission = permissionByFeatureName[featureName];
 
-      if (!checkPermission || checkPermission.isAllowed === false) {
+      if (!checkPermission || checkPermission.canAccess === false) {
         return reply.status(200).send({
           canAccess: false
         });
       }
 
       reply.status(200).send({
-        canAccess: checkPermission.isAllowed
+        canAccess: checkPermission.canAccess
       });
     }
   })

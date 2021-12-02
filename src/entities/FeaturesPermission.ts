@@ -5,13 +5,13 @@ export class FeaturesPermission {
   featureName: string;
 
   @Column()
-  isAllowed: boolean
+  canAccess: boolean
 
   constructor(
     featureName: string,
-    isAllowed: boolean,
+    canAccess: boolean,
   ) {
     this.featureName = featureName;
-    this.isAllowed = isAllowed;
+    this.canAccess = canAccess;
   }
 };

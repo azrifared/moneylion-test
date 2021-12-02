@@ -1,12 +1,21 @@
 import fastify from 'fastify';
 import { MongoEntityManager } from 'typeorm';
-import { checkUserPermissionByFeatureName } from './routes/checkUserPermissionByFeatureName';
+import { getUserPermissionByFeatureName } from './routes/getUserPermissionByFeatureName';
 import { updateUserPermission } from './routes/updateUserPemission';
+import { getUsers } from './routes/getUsers';
 
 async function buildApp(manager: MongoEntityManager) {
-  const app = fastify();
+  const app = fastify({
+    ajv: {
+      customOptions: {
+        allErrors: true,
+        coerceTypes: false
+      }
+    }
+  });
 
-  app.route(checkUserPermissionByFeatureName(manager));
+  app.route(getUsers(manager));
+  app.route(getUserPermissionByFeatureName(manager));
   app.route(updateUserPermission(manager));
   
   return app;

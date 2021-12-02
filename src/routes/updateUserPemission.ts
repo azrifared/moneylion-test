@@ -21,9 +21,9 @@ export function updateUserPermission(
       body: {
         type: 'object',
         properties: {
-          featureName: 'string',
-          email: 'string',
-          enable: 'boolean'
+          featureName: { type: 'string' },
+          email: { type: 'string' },
+          enable: { type: 'boolean' }
         }
       }
     },
@@ -40,8 +40,8 @@ export function updateUserPermission(
         error = 'Missing user email';
       }
 
-      if (!enable) {
-        error = 'Missing feature permission'
+      if (enable === undefined) {
+        error = 'Missing enable permission'
       }
 
       if (error) {
@@ -75,7 +75,7 @@ export function updateUserPermission(
       if (!permission) {
         user.featuresPermission = [
           ...user.featuresPermission ?? [],
-          { featureName, isAllowed: enable }
+          { featureName, canAccess: enable }
         ]
       } else {
         const filteredPermission = user.featuresPermission.filter(
@@ -83,7 +83,7 @@ export function updateUserPermission(
         );
         user.featuresPermission = [
           ...filteredPermission,
-          { featureName, isAllowed: enable }
+          { featureName, canAccess: enable }
         ];
       }
 

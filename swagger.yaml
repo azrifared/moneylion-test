@@ -1,0 +1,190 @@
+openapi: 3.0.0
+info:
+  version: 0.1.0
+  author: Azri Farid Shahroom
+  title: Manage features permission for user
+  description: A feature where Product Manager is alllowed to enable and disable access for user based on feature name
+servers:
+  - url: http://localhost:3000
+    description: local server
+tags:
+  - name: 'Users'
+    description: 'Get user details'
+  - name: 'Switch Features Permission'
+    description: 'Used to get user permission and add/edit user permission'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+entities:
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+        example: '61a757da97d0e00bc018e220'
+      name:
+        type: string
+        example: 'Azri Farid'
+      email:
+        type: string
+        example: 'azrifared8482@gmail.com'
+      roleName:
+        type: string
+        example: 'Product Manager'
+        enum: 
+          - 'Product Manager'
+      roleId:
+        type: number
+        example: 1
+      featuresPermission:
+        type: array
+        items:
+          $ref: '#/entities/FeaturesPermission'
+  FeaturesPermission:
+    type: object
+    properties:
+      featureName:
+        type: string
+        example: 'Booking'
+      canAccess:
+        type: boolean
+        example: true
+paths:
+  /users/{email}:
+    get:
+      tags:
+        - Users
+      description: 'Get user by email'
+      parameters:
+        - in: path
+          name: email
+          type: string
+          description: 'Person email'
+          required: true
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#entities/User'
+        '401':
+          description: 'User is unauthorized. Missing request token or invalid token'
+        '403':
+          description: 'User is not Product Manager'
+        '404':
+          description: 'Invalid email'
+        '500':
+          description: 'Internal server error'
+  /users:
+    get:
+      tags:
+        - Users
+      description: 'Get all users'
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#entities/User'
+        '401':
+          description: 'User is unauthorized. Missing request token or invalid token'
+        '403':
+          description: 'User is not Product Manager'
+        '500':
+          description: 'Internal server error'
+  /feature:
+    get:
+      tags:
+        - Switch Features Permission
+      description: 'Get user permission by feature name'
+      parameters:
+        - in: query
+          name: email
+          type: string
+          description: 'Person email'
+          required: true
+        - in: query
+          name: featureName
+          type: string
+          description: 'Feature name'
+          required: true
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  canAccess:
+                    type: boolean
+                    example: false
+        '401':
+          description: 'User is unauthorized. Missing request token or invalid token'
+        '403':
+          description: 'User is not Product Manager'
+        '404':
+          description: 'Invalid email or featurename'
+        '500':
+          description: 'Internal server error'
+    post:
+      tags:
+        - Switch Features Permission
+      description: 'Add or update feature permission'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: azrifared8482@gmail.com
+                  required: true
+                featureName:
+                  type: string
+                  example: Booking
+                  required: true
+                enable:
+                  type: boolean
+                  example: true
+                  required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Successfully update user azrifared8482@gmail.com'
+        '401':
+          description: 'User is unauthorized. Missing request token or invalid token'
+        '403':
+          description: 'User is not Product Manager'
+        '404':
+          description: 'Invalid email'
+        '500':
+          description: 'Internal server error'
+
+
+
+      
+
+
+
+
+
+      
+

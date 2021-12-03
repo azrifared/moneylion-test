@@ -45,7 +45,7 @@ export function updateUserPermission(
       }
 
       if (error) {
-        return reply.status(500).send({
+        return reply.status(404).send({
           error: `Error! Invalid request. ${error}`
         })
       }
@@ -87,25 +87,23 @@ export function updateUserPermission(
         ];
       }
 
-      let updatedUser: User;
-
       try {
-        updatedUser = await manager.save(user);
+        const updatedUser = await manager.save(user);
+
+        if (!updatedUser) {
+          return reply.status(304).send({
+            error: 'Error! Failed to modified'
+          })
+        }
+  
+        reply.status(200).send({
+          message: `Successfully update user ${email}`
+        });
       } catch (error) {
-        return reply.status(500).send({
+        reply.status(500).send({
           error: `Error! Failed while updating user ${email}. ${error.message}`
         })
       }
-      
-      if (!updatedUser) {
-        return reply.status(304).send({
-          error: 'Error! Failed to modified'
-        })
-      }
-
-      reply.status(200).send({
-        message: `Successfully update user ${email}`
-      });
     }
   })
 }

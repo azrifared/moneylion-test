@@ -61,26 +61,19 @@ export function getUserPermissionByFeatureName(
       }
 
       const { featuresPermission } = user;
-
-      if (!featuresPermission || !featuresPermission) {
-        return reply.status(200).send({
-          canAccess: false
-        });
-      }
-
       const permissionByFeatureName = R.indexBy(
-        R.prop('featureName'), featuresPermission
+        R.prop('featureName'), featuresPermission ?? []
       );
-      const checkPermission = permissionByFeatureName[featureName];
+      const permission = permissionByFeatureName[featureName];
 
-      if (!checkPermission || checkPermission.canAccess === false) {
-        return reply.status(200).send({
-          canAccess: false
+      if (!permission) {
+        return reply.status(404).send({
+          error: `Error! Feature name '${featureName}' doesn't exist`
         });
       }
 
       reply.status(200).send({
-        canAccess: checkPermission.canAccess
+        canAccess: permission.canAccess
       });
     }
   })

@@ -1,6 +1,8 @@
 const { buildUserData } = require('../../testUtils/mockData');
 const { buildManager, buildReply } = require('../../testUtils/mockFunction');
-const { getUserPermissionByFeatureName } = require('../getUserPermissionByFeatureName');
+const {
+  getUserPermissionByFeatureName,
+} = require('../getUserPermissionByFeatureName');
 const { User } = require('../../entities/User');
 
 describe('getUserPermissionByFeatureName', () => {
@@ -15,8 +17,8 @@ describe('getUserPermissionByFeatureName', () => {
     const email = 'test@user';
     const query = {
       email,
-      featureName: 'Booking'
-    }
+      featureName: 'Booking',
+    };
     const request = { query };
     const reply = buildReply();
 
@@ -29,7 +31,7 @@ describe('getUserPermissionByFeatureName', () => {
     expect(reply.status).toHaveBeenCalledWith(200);
     expect(reply.send).toHaveBeenCalledTimes(1);
     expect(reply.send).toHaveBeenCalledWith({ canAccess: true });
-  })
+  });
 
   test('Respond 404 if email not found', async () => {
     const userRecord = buildUserData();
@@ -38,13 +40,13 @@ describe('getUserPermissionByFeatureName', () => {
         if (email === userRecord.email) return userRecord;
         return undefined;
       }),
-      save: jest.fn((data) => data)
+      save: jest.fn((data) => data),
     });
     const email = 'test';
     const query = {
       email,
-      featureName: 'Booking'
-    }
+      featureName: 'Booking',
+    };
     const request = { query };
     const reply = buildReply();
 
@@ -55,7 +57,7 @@ describe('getUserPermissionByFeatureName', () => {
     expect(manager.findOne(User, { email })).toEqual(undefined);
     expect(reply.status).toHaveBeenCalledTimes(1);
     expect(reply.status).toHaveBeenCalledWith(404);
-  })
+  });
 
   test('Respond 500 if email is undefined', async () => {
     const userRecord = buildUserData();
@@ -64,11 +66,11 @@ describe('getUserPermissionByFeatureName', () => {
         if (email === userRecord.email) return userRecord;
         return undefined;
       }),
-      save: jest.fn((data) => data)
+      save: jest.fn((data) => data),
     });
     const query = {
-      featureName: 'Booking'
-    }
+      featureName: 'Booking',
+    };
     const request = { query };
     const reply = buildReply();
 
@@ -77,7 +79,7 @@ describe('getUserPermissionByFeatureName', () => {
     expect(manager.findOne).not.toHaveBeenCalled();
     expect(reply.status).toHaveBeenCalledTimes(1);
     expect(reply.status).toHaveBeenCalledWith(500);
-  })
+  });
 
   test('Respond 500 if featureName is undefined', async () => {
     const userRecord = buildUserData();
@@ -86,11 +88,11 @@ describe('getUserPermissionByFeatureName', () => {
         if (email === userRecord.email) return userRecord;
         return undefined;
       }),
-      save: jest.fn((data) => data)
+      save: jest.fn((data) => data),
     });
     const query = {
-      email: 'test'
-    }
+      email: 'test',
+    };
     const request = { query };
     const reply = buildReply();
 
@@ -99,19 +101,19 @@ describe('getUserPermissionByFeatureName', () => {
     expect(manager.findOne).not.toHaveBeenCalled();
     expect(reply.status).toHaveBeenCalledTimes(1);
     expect(reply.status).toHaveBeenCalledWith(500);
-  })
+  });
 
   test('Respond 500 if there is an internal server error', async () => {
     const manager = buildManager({
       findOne: jest.fn(() => {
-        throw new Error('server failed')
+        throw new Error('server failed');
       }),
     });
     const email = 'test@user';
     const query = {
       email,
-      featureName: 'Booking'
-    }
+      featureName: 'Booking',
+    };
     const request = { query };
     const reply = buildReply();
 
@@ -121,5 +123,5 @@ describe('getUserPermissionByFeatureName', () => {
     expect(manager.findOne).toHaveBeenCalledWith(User, { email });
     expect(reply.status).toHaveBeenCalledTimes(1);
     expect(reply.status).toHaveBeenCalledWith(500);
-  })
-})
+  });
+});

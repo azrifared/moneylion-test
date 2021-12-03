@@ -2,7 +2,7 @@ export function buildManager<T extends any>(
   overrides: {
     find?: (query?: object) => T[];
     findOne?: (query?: object) => T;
-    save?: (data?: T) => T
+    save?: (data?: T) => T;
   } = {}
 ) {
   return {

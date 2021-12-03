@@ -46,13 +46,13 @@ describe('getUser', () => {
     expect(manager.findOne(User, params)).toEqual(undefined);
     expect(reply.status).toHaveBeenCalledTimes(1);
     expect(reply.status).toHaveBeenCalledWith(404);
-  })
+  });
 
   test('Respond 500 if there is an internal server error', async () => {
     const userRecord = buildUserData();
     const manager = buildManager({
       findOne: jest.fn((User, { email }) => {
-        throw new Error('Failed to get data')
+        throw new Error('Failed to get data');
       }),
     });
     const params = { email: '123' };
@@ -65,5 +65,5 @@ describe('getUser', () => {
     expect(manager.findOne).toHaveBeenCalledWith(User, params);
     expect(reply.status).toHaveBeenCalledTimes(1);
     expect(reply.status).toHaveBeenCalledWith(500);
-  })
+  });
 });

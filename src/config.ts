@@ -5,7 +5,7 @@ const isProduction = process.env['NODE_ENV'] === 'production';
 if (isProduction) {
   if (!process.env['JWT_SECRET']) {
     console.error('Failed to start server. Missing env JWT_SECRET');
-    process.exit(1)
+    process.exit(1);
   }
 }
 

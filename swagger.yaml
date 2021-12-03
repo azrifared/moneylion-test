@@ -65,6 +65,7 @@ paths:
           type: string
           description: 'Person email'
           required: true
+          example: azrifared8482@gmail.com
       responses:
         '200':
           description: 'OK'
@@ -111,11 +112,13 @@ paths:
           type: string
           description: 'Person email'
           required: true
+          example: azrifared8482@gmail.com
         - in: query
           name: featureName
           type: string
           description: 'Feature name'
           required: true
+          example: 'Booking'
       responses:
         '200':
           description: 'OK'

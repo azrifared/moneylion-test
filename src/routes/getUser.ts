@@ -3,7 +3,6 @@ import { User } from '../entities/User';
 import { authorizeProductManager } from '../middlewares/authorizeProductManager';
 import { JWT_SECRET } from '../config';
 import { Route } from '../types/Route';
-import { user } from '../testUtils/mockData';
 
 interface Params {
   email: string;

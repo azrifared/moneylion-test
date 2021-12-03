@@ -1,4 +1,3 @@
-
 import * as mongoDb from 'mongodb';
 import { User } from '../entities/User';
 
@@ -8,5 +7,5 @@ export const user: User = {
   email: 'test@user',
   roleName: 'Product Manager',
   roleId: 1,
-  featuresPermission: []
+  featuresPermission: [],
 };

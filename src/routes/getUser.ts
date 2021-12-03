@@ -12,16 +12,16 @@ interface Params {
 export function getUser(
   manager: MongoEntityManager
 ): Route<{ Params: Params }> {
-  return ({
+  return {
     method: 'GET',
     url: '/users/:email',
     schema: {
       params: {
         type: 'object',
         properties: {
-          email: { type: 'string' }
-        }
-      }
+          email: { type: 'string' },
+        },
+      },
     },
     preHandler: authorizeProductManager(JWT_SECRET),
     handler: async (request, reply) => {
@@ -31,16 +31,16 @@ export function getUser(
 
         if (!usersRecord) {
           return reply.status(404).send({
-            error: `${email} not found`
-          })
+            error: `${email} not found`,
+          });
         }
 
         reply.status(200).send(usersRecord);
       } catch (error) {
         return reply.status(500).send({
-          error: `Error! Failed to get users. ${error.message}`
-        })
+          error: `Error! Failed to get users. ${error.message}`,
+        });
       }
-    }
-  })
+    },
+  };
 }

@@ -5,13 +5,10 @@ export class FeaturesPermission {
   featureName: string;
 
   @Column()
-  canAccess: boolean
+  canAccess: boolean;
 
-  constructor(
-    featureName: string,
-    canAccess: boolean,
-  ) {
+  constructor(featureName: string, canAccess: boolean) {
     this.featureName = featureName;
     this.canAccess = canAccess;
   }
-};
+}

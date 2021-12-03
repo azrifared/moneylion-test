@@ -4,7 +4,7 @@ import { PORT } from './config';
 import buildApp from './app';
 import getIpAddress from './utils/getIpAddress';
 
- createConnection()
+createConnection()
   .then(async (connection) => {
     const manager = connection.mongoManager;
     const app = await buildApp(manager);
@@ -14,9 +14,8 @@ import getIpAddress from './utils/getIpAddress';
         console.error('Error during starting server: ', err);
         process.exit(1);
       }
-  
+
       console.info(`Server listening on ${address}`);
-    })
+    });
   })
-  .catch(error => console.error('Error! Failed to start server', error));
-  
+  .catch((error) => console.error('Error! Failed to start server', error));

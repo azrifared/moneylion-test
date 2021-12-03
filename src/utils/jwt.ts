@@ -1,6 +1,6 @@
-import * as jwt from 'jsonwebtoken'
-import { promisify } from 'util'
-import { Token } from '../types/Route'
+import * as jwt from 'jsonwebtoken';
+import { promisify } from 'util';
+import { Token } from '../types/Route';
 
 export const verifyToken = (
   token: string,
@@ -11,7 +11,7 @@ export const verifyToken = (
     token,
     secret,
     options
-  )
+  );
 
 export const signToken = (
   token: string | object | Buffer,
@@ -20,4 +20,4 @@ export const signToken = (
 ) =>
   promisify<string | object | Buffer, jwt.Secret, jwt.SignOptions, string>(
     jwt.sign
-  )(token, secret, options)
+  )(token, secret, options);

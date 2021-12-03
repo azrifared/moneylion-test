@@ -8,12 +8,12 @@ import { JWT_SECRET } from '../config';
 interface Query {
   email: string;
   featureName: string;
-};
+}
 
 export function getUserPermissionByFeatureName(
   manager: MongoEntityManager
 ): Route<{ Querystring: Query }> {
-  return ({
+  return {
     method: 'GET',
     url: '/feature',
     schema: {
@@ -21,9 +21,9 @@ export function getUserPermissionByFeatureName(
         type: 'object',
         properties: {
           email: { type: 'string' },
-          featureName: { type: 'string' }
-        }
-      }
+          featureName: { type: 'string' },
+        },
+      },
     },
     preHandler: authorizeProductManager(JWT_SECRET),
     handler: async (request, reply) => {
@@ -31,50 +31,51 @@ export function getUserPermissionByFeatureName(
       let error;
 
       if (!email) {
-        error = 'Missing user email.'
+        error = 'Missing user email.';
       }
 
       if (!featureName) {
-        error = 'Missing feature name.'
+        error = 'Missing feature name.';
       }
 
       if (error) {
         return reply.status(500).send({
-          error: `Error! Invalid request. ${error}`
-        })
+          error: `Error! Invalid request. ${error}`,
+        });
       }
 
       let user: User;
 
       try {
-        user = await manager.findOne(User, { email })
+        user = await manager.findOne(User, { email });
       } catch (error) {
         return reply.status(500).send({
-          error: `Error! Failed to find user ${email}: ${error.message}`
+          error: `Error! Failed to find user ${email}: ${error.message}`,
         });
       }
 
       if (!user) {
         return reply.status(404).send({
-          error: `Error! ${email} not found`
-        })
+          error: `Error! ${email} not found`,
+        });
       }
 
       const { featuresPermission } = user;
       const permissionByFeatureName = R.indexBy(
-        R.prop('featureName'), featuresPermission ?? []
+        R.prop('featureName'),
+        featuresPermission ?? []
       );
       const permission = permissionByFeatureName[featureName];
 
       if (!permission) {
         return reply.status(404).send({
-          error: `Error! Feature name '${featureName}' doesn't exist`
+          error: `Error! Feature name '${featureName}' doesn't exist`,
         });
       }
 
       reply.status(200).send({
-        canAccess: permission.canAccess
+        canAccess: permission.canAccess,
       });
-    }
-  })
+    },
+  };
 }

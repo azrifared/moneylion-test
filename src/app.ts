@@ -5,19 +5,18 @@ import { getUserPermissionByFeatureName } from './routes/getUserPermissionByFeat
 import { updateUserPermission } from './routes/updateUserPemission';
 import { getUsers } from './routes/getUsers';
 import { getUser } from './routes/getUser';
-import { getSwaggerIndex } from './utils/getSwaggerIndex'
+import { getSwaggerIndex } from './utils/getSwaggerIndex';
 import { createReadStream } from 'fs';
 
 async function buildApp(manager: MongoEntityManager) {
-
   // validate schema
   const app = fastify({
     ajv: {
       customOptions: {
         allErrors: true,
-        coerceTypes: false
-      }
-    }
+        coerceTypes: false,
+      },
+    },
   });
 
   // api routes
@@ -29,14 +28,14 @@ async function buildApp(manager: MongoEntityManager) {
   // swagger documentation
   const swaggerPath = swagger.absolutePath();
   const swaggerIndex = getSwaggerIndex(swaggerPath);
-  app.register(require('fastify-static'), { root: swaggerPath })
-  app.get('/swagger.yaml', (request, reply) =>{
-    reply.send(createReadStream(`${__dirname}/../swagger.yaml`))
+  app.register(require('fastify-static'), { root: swaggerPath });
+  app.get('/swagger.yaml', (request, reply) => {
+    reply.send(createReadStream(`${__dirname}/../swagger.yaml`));
   });
   app.get('/', (request, reply) => {
-    reply.type('text/html').send(swaggerIndex)
+    reply.type('text/html').send(swaggerIndex);
   });
-  
+
   return app;
 }
 

@@ -9,12 +9,12 @@ interface Body {
   featureName: string;
   email: string;
   enable: boolean;
-};
+}
 
 export function updateUserPermission(
   manager: MongoEntityManager
 ): Route<{ Body: Body }> {
-  return ({
+  return {
     method: 'POST',
     url: '/feature',
     schema: {
@@ -23,9 +23,9 @@ export function updateUserPermission(
         properties: {
           featureName: { type: 'string' },
           email: { type: 'string' },
-          enable: { type: 'boolean' }
-        }
-      }
+          enable: { type: 'boolean' },
+        },
+      },
     },
     preHandler: authorizeProductManager(JWT_SECRET),
     handler: async (request, reply) => {
@@ -41,13 +41,13 @@ export function updateUserPermission(
       }
 
       if (enable === undefined) {
-        error = 'Missing enable permission'
+        error = 'Missing enable permission';
       }
 
       if (error) {
         return reply.status(404).send({
-          error: `Error! Invalid request. ${error}`
-        })
+          error: `Error! Invalid request. ${error}`,
+        });
       }
 
       let user: User;
@@ -56,34 +56,35 @@ export function updateUserPermission(
         user = await manager.findOne(User, { email });
       } catch (error) {
         return reply.status(500).send({
-          error: `Error! Failed to find user ${email}: ${error.message}`
+          error: `Error! Failed to find user ${email}: ${error.message}`,
         });
       }
 
       if (!user) {
         return reply.status(404).send({
-          error: `Error! ${email} not found`
+          error: `Error! ${email} not found`,
         });
       }
 
       const { featuresPermission } = user;
       const permissionByFeatureName = R.indexBy(
-        R.prop('featureName'), featuresPermission ?? []
+        R.prop('featureName'),
+        featuresPermission ?? []
       );
       const permission = permissionByFeatureName[featureName];
 
       if (!permission) {
         user.featuresPermission = [
-          ...user.featuresPermission ?? [],
-          { featureName, canAccess: enable }
-        ]
+          ...(user.featuresPermission ?? []),
+          { featureName, canAccess: enable },
+        ];
       } else {
         const filteredPermission = user.featuresPermission.filter(
           ({ featureName: dbFeatureName }) => dbFeatureName !== featureName
         );
         user.featuresPermission = [
           ...filteredPermission,
-          { featureName, canAccess: enable }
+          { featureName, canAccess: enable },
         ];
       }
 
@@ -92,18 +93,18 @@ export function updateUserPermission(
 
         if (!updatedUser) {
           return reply.status(304).send({
-            error: 'Error! Failed to modified'
-          })
+            error: 'Error! Failed to modified',
+          });
         }
-  
+
         reply.status(200).send({
-          message: `Successfully update user ${email}`
+          message: `Successfully update user ${email}`,
         });
       } catch (error) {
         reply.status(500).send({
-          error: `Error! Failed while updating user ${email}. ${error.message}`
-        })
+          error: `Error! Failed while updating user ${email}. ${error.message}`,
+        });
       }
-    }
-  })
+    },
+  };
 }

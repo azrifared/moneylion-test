@@ -6,7 +6,7 @@ import {
   RequestGenericInterface,
   HTTPMethods,
   RouteHandlerMethod,
-} from 'fastify'
+} from 'fastify';
 import { User } from '../entities/User';
 
 export interface Token extends User {
@@ -15,7 +15,7 @@ export interface Token extends User {
 
 declare module 'fastify' {
   interface FastifyRequest {
-    token: Token
+    token: Token;
   }
 }
 
@@ -27,13 +27,12 @@ export interface Route<
     RawReplyDefaultExpression,
     GenericRequest
   > {
-  method: HTTPMethods
-  url: string
+  method: HTTPMethods;
+  url: string;
   handler: RouteHandlerMethod<
     RawServerDefault,
     RawRequestDefaultExpression,
     RawReplyDefaultExpression,
     GenericRequest
-  >
+  >;
 }
-

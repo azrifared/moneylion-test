@@ -1,9 +1,4 @@
-import {
-  Entity,
-  Column,
-  ObjectIdColumn,
-  ObjectID,
-} from 'typeorm';
+import { Entity, Column, ObjectIdColumn, ObjectID } from 'typeorm';
 import { FeaturesPermission } from './FeaturesPermission';
 
 @Entity()
@@ -23,6 +18,6 @@ export class User {
   @Column({ nullable: true })
   roleId: number;
 
-  @Column(type => FeaturesPermission)
+  @Column((type) => FeaturesPermission)
   featuresPermission: FeaturesPermission[];
-};
+}

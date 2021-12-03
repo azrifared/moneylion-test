@@ -7,7 +7,7 @@ export function authorizeProductManager(jwtSecret: string) {
 
     if (!authorization || typeof authorization !== 'string') {
       return reply.status(401).send({
-        error: 'User is unauthorized. Missing access token.'
+        error: 'User is unauthorized. Missing access token.',
       });
     }
 
@@ -18,7 +18,7 @@ export function authorizeProductManager(jwtSecret: string) {
       token = await verifyToken(accessToken, jwtSecret);
     } catch (error) {
       return reply.status(401).send({
-        error: 'Invalid access token.'
+        error: 'Invalid access token.',
       });
     }
 
@@ -26,10 +26,10 @@ export function authorizeProductManager(jwtSecret: string) {
 
     if (!roleName || roleName !== 'Product Manager') {
       return reply.status(403).send({
-        error: 'Forbidden'
+        error: 'Forbidden',
       });
     }
 
     request.token = token;
-  }
+  };
 }

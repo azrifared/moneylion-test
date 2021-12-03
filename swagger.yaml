@@ -35,7 +35,7 @@ entities:
       roleName:
         type: string
         example: 'Product Manager'
-        enum: 
+        enum:
           - 'Product Manager'
       roleId:
         type: number
@@ -177,14 +177,3 @@ paths:
           description: 'Invalid email'
         '500':
           description: 'Internal server error'
-
-
-
-      
-
-
-
-
-
-      
-

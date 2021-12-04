@@ -2,7 +2,7 @@ const { DB_URL, isProduction } = require('./src/config');
 
 const entitiesPath = isProduction
   ? 'build/entities/*.js'
-  : 'src/entities/*.{js,ts}'
+  : 'src/entities/*.{js,ts}';
 
 module.exports = {
   type: 'mongodb',

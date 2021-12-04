@@ -1,5 +1,5 @@
 const isProduction = process.env['NODE_ENV'] === 'production';
-const DB_URL = env.get('DB_URL').asString();
+const DB_URL = process.env['DB_URL'];
 const entitiesPath = isProduction
   ? 'build/entities/*.js'
   : 'src/entities/*.{js,ts}';

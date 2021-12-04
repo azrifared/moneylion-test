@@ -6,7 +6,7 @@ const entitiesPath = isProduction
 
 if (isProduction) {
   if (!DB_URL) {
-    console.error('Failed to start server. Missing env JWT_SECRET');
+    console.error('Failed to start server. Missing env DB_URL');
     process.exit(1);
   }
 }

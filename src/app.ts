@@ -18,6 +18,10 @@ async function buildApp(manager: MongoEntityManager) {
       },
     },
   });
+  app.register(require('fastify-cors'), {
+    origin: '*'
+  });
+
 
   // api routes
   app.route(getUsers(manager));

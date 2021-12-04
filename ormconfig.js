@@ -1,10 +1,14 @@
+const { DB_URL, isProduction } = require('./src/config');
+
+const entitiesPath = isProduction
+  ? 'build/entities/*.js'
+  : 'src/entities/*.{js,ts}'
+
 module.exports = {
   type: 'mongodb',
-  host: 'localhost',
-  database: 'development',
-  port: 27017,
+  url: DB_URL,
   useNewUrlParser: true,
   synchronize: true,
   logging: true,
-  entities: ['src/entities/*.{js,ts}'],
+  entities: [entitiesPath],
 };

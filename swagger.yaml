@@ -6,7 +6,9 @@ info:
   description: A feature where Product Manager is alllowed to enable and disable access for user based on feature name
 servers:
   - url: http://localhost:3000
-    description: local server
+    description: Local server
+  - url: https://moneylion-feature-switch.herokuapp.com
+    description: Test server
 tags:
   - name: 'Users'
     description: 'Get user details'
